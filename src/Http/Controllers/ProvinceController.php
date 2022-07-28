@@ -4,26 +4,24 @@ namespace Mdhesari\LaravelCountryStateCities\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Mdhesari\LaravelCountryStateCities\Models\City;
 use Mdhesari\LaravelCountryStateCities\Models\Province;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
+class ProvinceController extends Controller
 {
     /**
-     * Get all cities of a specific Province
+     * Get all countries
      *
      * @param Request $request
-     * @param Province $province
      * @return JsonResponse
      * @group Province-Cities
      */
-    public function index(Request $request, Province $province): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $query = $province->cities();
+        $query = Province::query();
 
-        if ($request->has('s')) {
-            $query->where('name', 'like', '%' . $request->get('s') . '%');
+        if ( $request->has('s') ) {
+            $query->where('name', 'like', '%'.$request->get('s').'%');
         }
 
         return api()->success(null, [
@@ -32,17 +30,16 @@ class CityController extends Controller
     }
 
     /**
-     * Get the specified city
+     * Get the specified country
      *
-     * @param City $city
-     *
+     * @param Province $province
      * @return JsonResponse
      * @group Province-Cities
      */
-    public function show(City $city): JsonResponse
+    public function show(Province $province): JsonResponse
     {
         return api()->success(null, [
-            'items' => $city,
+            'items' => $province,
         ]);
     }
 }

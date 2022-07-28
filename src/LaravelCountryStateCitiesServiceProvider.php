@@ -4,7 +4,6 @@ namespace Mdhesari\LaravelCountryStateCities;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Mdhesari\LaravelCountryStateCities\Models\Country;
 
 class LaravelCountryStateCitiesServiceProvider extends ServiceProvider
 {
@@ -46,10 +45,6 @@ class LaravelCountryStateCitiesServiceProvider extends ServiceProvider
         }
 
         $this->handleRoutes();
-
-        Route::bind('country', function ($value) {
-            return Country::whereId($value)->orWhere('iso3', $value)->firstOrFail();
-        });
     }
 
     /**
