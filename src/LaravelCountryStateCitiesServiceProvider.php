@@ -4,6 +4,8 @@ namespace Mdhesari\LaravelCountryStateCities;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Mdhesari\LaravelCountryStateCities\Models\City;
+use Mdhesari\LaravelCountryStateCities\Models\Province;
 
 class LaravelCountryStateCitiesServiceProvider extends ServiceProvider
 {
@@ -17,12 +19,12 @@ class LaravelCountryStateCitiesServiceProvider extends ServiceProvider
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-country-state-cities');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-country-state-cities');
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
 
-        if ($this->app->runningInConsole()) {
+        if ( $this->app->runningInConsole() ) {
             $this->publishes([
-                __DIR__ . '/../config/config.php' => config_path('laravel-country-state-cities.php'),
+                __DIR__.'/../config/config.php' => config_path('laravel-country-state-cities.php'),
             ], 'config');
 
             // Publishing the views.
@@ -45,6 +47,14 @@ class LaravelCountryStateCitiesServiceProvider extends ServiceProvider
         }
 
         $this->handleRoutes();
+
+        Route::bind('province', function ($value) {
+            return Province::whereId($value)->orWhere('slug', $value)->firstOrFail();
+        });
+
+        Route::bind('city', function ($value) {
+            return City::whereId($value)->orWhere('slug', $value)->firstOrFail();
+        });
     }
 
     /**
@@ -53,7 +63,7 @@ class LaravelCountryStateCitiesServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-country-state-cities');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'laravel-country-state-cities');
 
         // Register the main class to use with the facade
         $this->app->singleton('laravel-country-state-cities', function () {
@@ -70,7 +80,7 @@ class LaravelCountryStateCitiesServiceProvider extends ServiceProvider
         $route = Route::prefix('api')
             ->middleware('api');
 
-        $route->group(__DIR__ . '/../routes/api.php');
+        $route->group(__DIR__.'/../routes/api.php');
 
     }
 }
