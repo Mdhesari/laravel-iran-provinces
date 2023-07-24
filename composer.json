@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "mdhesari/api-response": "^1.0"
+        "mdhesari/api-response": "^1.0|^2.0|^3.0"
     },
     "require-dev": {
         "orchestra/testbench": "^6.0",
